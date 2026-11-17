@@ -17,7 +17,6 @@
 * **Inputs:**
   * External flight schedule CSV (`sample_flights.csv`) or synthetic scenario generators (`id`, `dep_time`, `arr_time`, `weight`, `revenue`) for $N \in [0, 512]$.
   * Airport network adjacency matrices and edge lists (`MAX_NODES = 10`) representing fuel costs and transit times.
-  * ACARS/NOTAM telemetry strings and periodic maintenance cycle moduli.
 * **Outputs:**
   * Console recovery reports, empirical benchmark metrics, and automated test results.
   * Exported artifacts: `benchmark_report.csv`, `recovery_schedule.csv`, `recovery_plan.json`, and `execution_output.txt`.
@@ -28,7 +27,7 @@
 * **Success Criteria:**
   * Zero gate or runway overlaps in the recovered schedule.
   * 100% agreement across exact 0/1 optimization paradigms (Dynamic Programming, Backtracking, and FIFO/LIFO/LC Branch-and-Bound).
-  * 16/16 pass rate across Oracle, Integration, Boundary, Invalid-Input, and Regression test suites.
+  * 15/15 pass rate across Oracle, Integration, Boundary, Invalid-Input, and Regression test suites.
 
 ---
 
@@ -38,14 +37,13 @@
 airline_ops_daa_suite/
 ├── Phase_I/                   # Standalone Phase I evaluation snapshot & skeleton
 ├── Phase_II/                  # Complete Phase II evaluation snapshot & proof logs
-├── aviation_types.h           # Core structs (Flight, Edge, Metrics) & 30 prototypes
+├── aviation_types.h           # Core structs (Flight, Edge, Metrics) & 25 prototypes
 ├── sorting_searching.c        # Row 1: Binary Search, Merge Sort, Quick Sort
 ├── divide_conquer.c           # Row 1: Strassen 2x2, Max Subarray, Power, Celebrity Hub
 ├── greedy_graphs.c            # Row 2: Fractional Knapsack, Activity, Huffman, Gate, Dijkstra, Prim, Kruskal
 ├── dynamic_programming.c      # Row 3: 0/1 Knapsack, MCM, LCS, OBST, Bellman-Ford, TSP DP, Floyd-Warshall
 ├── backtracking_bnb.c         # Row 4: N-Queens, Subset Sum, Knapsack Bt, FIFO/LIFO/LC BnB, TSP BnB
-├── string_number_theory.c     # Row 5: Chinese Remainder Theorem, Naive, Rabin-Karp, Automaton, KMP
-├── test_suite.c               # 16 automated unit, oracle, boundary, invalid & regression tests
+├── test_suite.c               # 15 automated unit, oracle, boundary, invalid & regression tests
 ├── main.c                     # Conflict Recovery Engine, Menu CLI, Benchmark Runner & Exporters
 ├── sample_flights.csv         # Sample 10-flight input dataset
 ├── Makefile                   # Build configuration script
@@ -153,13 +151,13 @@ ALGORITHM GateIntervalPartitioning(Flights[0..n-1])
 * **Branch & Bound (FIFO / LIFO / Least-Cost):** Revenue $= 425$ across all three after ratio-sorting (`sort_cargo_by_ratio`), with Least-Cost expanding the fewest tree nodes.
 
 ### 5.4 Complexity Class Analysis & Reduction ($\text{Subset Sum} \le_P \text{0/1 Knapsack}$)
-* **Class P:** Merge/Quick Sort, Binary Search, Activity Selection, Gate Partitioning, Dijkstra, Prim, Kruskal, Floyd-Warshall, KMP.
+* **Class P:** Merge/Quick Sort, Binary Search, Activity Selection, Gate Partitioning, Dijkstra, Prim, Kruskal, Floyd-Warshall.
 * **NP-Complete / NP-Hard:** Subset Sum, 0/1 Knapsack, N-Queens, and Travelling Salesperson Problem (TSP).
 * **Polynomial-Time Reduction:** Given a Subset Sum instance $(S = \{h_1, \dots, h_n\}, T)$, construct a 0/1 Knapsack instance in $O(n)$ time by setting each item's weight $w_i = h_i$, revenue $v_i = h_i$, capacity $W = T$, and target profit $V = T$. Then a subset of $S$ sums to $T$ if and only if the knapsack achieves profit $\ge T$ within capacity $T$.
 
 ---
 
-## 6. Test-Case Verification Table (16 Automated Checks + Stress Case)
+## 6. Test-Case Verification Table (15 Automated Checks + Stress Case)
 
 | Test ID | Category | Test Case Description | Input Specification | Expected | Actual | Status |
 |---|---|---|---|---|---|---|
@@ -170,26 +168,24 @@ ALGORITHM GateIntervalPartitioning(Flights[0..n-1])
 | TC-05 | Oracle-R3 | Matrix Chain Multiplication Order | `dims = [10, 30, 5, 60]` | `4500` | `4500` | PASS |
 | TC-06 | Oracle-R3 | LCS Flight Waypoint Adherence | `"DELBOMBLR"` vs `"DEBOMLR"` | `7` | `7` | PASS |
 | TC-07 | Oracle-R4 | TSP DP vs. Branch & Bound Tour | 4-hub symmetric cost matrix | `80` | `80` | PASS |
-| TC-08 | Oracle-R5 | 4 String Matchers Consensus | `"ACARS_WINDSHEAR_ALERT_WINDSHEAR"` | `2` | `2` | PASS |
-| TC-09 | Integration| Sort + Runway + Gate Pipeline | 4 overlapping flights ($500..680$) | `3`, `2` | `3`, `2` | PASS |
-| TC-10 | Boundary | Empty Flight Schedule ($N=0$) | `N = 0` in Runway Selection | `0` | `0` | PASS |
-| TC-11 | Boundary | Single Flight Schedule ($N=1$) | `N = 1` in Gate Partitioning | `1` | `1` | PASS |
-| TC-12 | Boundary | Powering Number Zero Exponent | `base = 99, exp = 0` | `1` | `1` | PASS |
-| TC-13 | Invalid | Binary Search Missing Departure | `target_dep = 999` | `-1` | `-1` | PASS |
-| TC-14 | Invalid | Knapsack Negative Capacity | `capacity = -25` | `0` | `0` | PASS |
-| TC-15 | Invalid | Bellman-Ford Negative Cycle Detect | 3-edge cycle ($1 - 5 + 2 = -2$) | `-1` | `-1` | PASS |
-| TC-16 | Regression | DP vs. FIFO/LIFO/LC BnB Knapsack | 4 cargo lots, `capacity = 40` | `320` | `320` | PASS |
-| TC-17 | Adversarial| Reverse-Sorted 250-Flight Stress | $N = 250$, `dep = 1200 - 4*i` | `14` gates| `14` gates| PASS |
+| TC-08 | Integration| Sort + Runway + Gate Pipeline | 4 overlapping flights ($500..680$) | `3`, `2` | `3`, `2` | PASS |
+| TC-09 | Boundary | Empty Flight Schedule ($N=0$) | `N = 0` in Runway Selection | `0` | `0` | PASS |
+| TC-10 | Boundary | Single Flight Schedule ($N=1$) | `N = 1` in Gate Partitioning | `1` | `1` | PASS |
+| TC-11 | Boundary | Powering Number Zero Exponent | `base = 99, exp = 0` | `1` | `1` | PASS |
+| TC-12 | Invalid | Binary Search Missing Departure | `target_dep = 999` | `-1` | `-1` | PASS |
+| TC-13 | Invalid | Knapsack Negative Capacity | `capacity = -25` | `0` | `0` | PASS |
+| TC-14 | Invalid | Bellman-Ford Negative Cycle Detect | 3-edge cycle ($1 - 5 + 2 = -2$) | `-1` | `-1` | PASS |
+| TC-15 | Regression | DP vs. FIFO/LIFO/LC BnB Knapsack | 4 cargo lots, `capacity = 40` | `320` | `320` | PASS |
+| TC-16 | Adversarial| Reverse-Sorted 250-Flight Stress | $N = 250$, `dep = 1200 - 4*i` | `14` gates| `14` gates| PASS |
 
 ---
 
 ## 7. Progression After Phase I, Limitations & Error Analysis
 
-* **Progression from Phase I to Phase II:** Upgraded the standalone Phase I sorting/greedy skeleton (`Phase_I/`) into a full conflict-detection and recovery simulator (`Phase_II/`) with CSV ingestion, JSON/CSV exporters, and a 16-test automated suite. Diagnosed and fixed early branch pruning in LIFO/LC Branch-and-Bound by sorting cargo items by descending revenue-to-weight ratio prior to bound calculation.
+* **Progression from Phase I to Phase II:** Upgraded the standalone Phase I sorting/greedy skeleton (`Phase_I/`) into a full conflict-detection and recovery simulator (`Phase_II/`) with CSV ingestion, JSON/CSV exporters, and a 15-test automated suite. Diagnosed and fixed early branch pruning in LIFO/LC Branch-and-Bound by sorting cargo items by descending revenue-to-weight ratio prior to bound calculation.
 * **Limitations:**
   * Exact NP-hard solvers (`tsp_dp_tour` $\Theta(n^2 2^n)$, `bnb_tsp_tour` $O(n!)$, `n_queens_backtrack` $O(n!)$) are bounded to `MAX_NODES = 10` due to exponential state growth.
   * `dp_01_knapsack` uses a fixed stack array `dp[256]`, requiring weight scaling for capacities above 255.
-  * `chinese_remainder_theorem` assumes pairwise coprime maintenance cycle moduli.
 
 ---
 
@@ -197,7 +193,7 @@ ALGORITHM GateIntervalPartitioning(Flights[0..n-1])
 
 ```powershell
 # 1. Compile the complete application
-gcc -std=c99 -Wall -Wextra -O2 sorting_searching.c divide_conquer.c greedy_graphs.c dynamic_programming.c backtracking_bnb.c string_number_theory.c test_suite.c main.c -o aviation_suite.exe
+gcc -std=c99 -Wall -Wextra -O2 sorting_searching.c divide_conquer.c greedy_graphs.c dynamic_programming.c backtracking_bnb.c test_suite.c main.c -o aviation_suite.exe
 
 # 2. Run Interactive Menu CLI
 .\aviation_suite.exe

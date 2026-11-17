@@ -61,13 +61,6 @@ int run_all_unit_tests(void) {
     int tsp_bb = bnb_tsp_tour(4, tsp_g, &m);
     total++; passed += check_test("ORACLE-R4", "TSP DP vs Branch-and-Bound Tour", tsp_dp == 80 && tsp_bb == 80, 80, tsp_bb);
 
-    const char *log_txt = "ACARS_WINDSHEAR_ALERT_WINDSHEAR";
-    int h1 = naive_string_matcher(log_txt, "WINDSHEAR", &m);
-    int h2 = rabin_karp_matcher(log_txt, "WINDSHEAR", &m);
-    int h3 = finite_automaton_matcher(log_txt, "WINDSHEAR", &m);
-    int h4 = kmp_matcher(log_txt, "WINDSHEAR", &m);
-    total++; passed += check_test("ORACLE-R5", "4 String Matchers Consensus", (h1 == 2 && h2 == 2 && h3 == 2 && h4 == 2), 2, h4);
-
     /* 2. INTEGRATION TEST (Sort -> Runway Selection -> Gate Partition) */
     Flight f_int[4] = {
         {1, 500, 560, 10, 100, -1},

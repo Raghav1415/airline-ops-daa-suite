@@ -70,13 +70,6 @@ int bnb_lifo_knapsack(const Flight arr[], int n, int capacity, Metrics *m);
 int bnb_lc_knapsack(const Flight arr[], int n, int capacity, Metrics *m);
 int bnb_tsp_tour(int n, int cost[MAX_NODES][MAX_NODES], Metrics *m);
 
-/* Row 5: CRT & String Matching */
-int chinese_remainder_theorem(const int num[], const int rem[], int k, Metrics *m);
-int naive_string_matcher(const char txt[], const char pat[], Metrics *m);
-int rabin_karp_matcher(const char txt[], const char pat[], Metrics *m);
-int finite_automaton_matcher(const char txt[], const char pat[], Metrics *m);
-int kmp_matcher(const char txt[], const char pat[], Metrics *m);
-
 /* Automated Test Suite Runner */
 int run_all_unit_tests(void);
 

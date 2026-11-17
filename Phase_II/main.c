@@ -211,7 +211,7 @@ static void run_scenarios_and_benchmarks(void) {
     }
 }
 
-/* Executes a complete showcase of all 30 Syllabus Algorithms */
+/* Executes a complete showcase of all 25 Syllabus Algorithms */
 static void run_full_syllabus_showcase(void) {
     Metrics m = {0, 0};
     int A[2][2] = {{1, 2}, {3, 4}}, B[2][2] = {{2, 0}, {1, 2}}, C[2][2] = {{0}};
@@ -234,11 +234,9 @@ static void run_full_syllabus_showcase(void) {
     int dims[4] = {10, 30, 5, 60};
     int tsp_mat[MAX_NODES][MAX_NODES] = {{0, 10, 15, 20}, {10, 0, 35, 25}, {15, 35, 0, 30}, {20, 25, 30, 0}};
     int shift_hrs[4] = {3, 5, 7, 2};
-    int num[3] = {3, 5, 7}, rem[3] = {2, 3, 2};
-    const char *log_s = "ALERT_WINDSHEAR_DETECTED_WINDSHEAR";
 
     printf("\n====================================================================\n");
-    printf("   ALL 30 SYLLABUS ALGORITHMS VERIFICATION SHOWCASE\n");
+    printf("   ALL 25 SYLLABUS ALGORITHMS VERIFICATION SHOWCASE\n");
     printf("====================================================================\n");
     printf("  [Row 1 D&C]    Strassen C[0][0]=%d | MaxSubarray=%d | Power(2^10)=%lld | CelebrityHub=%d\n",
            C[0][0], max_subarray_sum(delays, 0, 5, &m), power_number(2, 10, &m), find_celebrity_airport(adj_cel, 4, &m));
@@ -249,10 +247,6 @@ static void run_full_syllabus_showcase(void) {
            optimal_bst_cost(freq, 4, &m), dist_bf[3], fw[0][3], tsp_dp_tour(4, tsp_mat, &m));
     printf("  [Row 4 Bt/BnB] 4-Queens=%d | SubsetSum(target=10)=%d | TSP_BnB=%d\n",
            n_queens_backtrack(4, &m), subset_sum_backtrack(shift_hrs, 4, 10, &m), bnb_tsp_tour(4, tsp_mat, &m));
-    printf("  [Row 5 Misc]   CRT_Sync=%d | StringHits (Naive=%d, RK=%d, FA=%d, KMP=%d)\n",
-           chinese_remainder_theorem(num, rem, 3, &m),
-           naive_string_matcher(log_s, "WINDSHEAR", &m), rabin_karp_matcher(log_s, "WINDSHEAR", &m),
-           finite_automaton_matcher(log_s, "WINDSHEAR", &m), kmp_matcher(log_s, "WINDSHEAR", &m));
 }
 
 int main(int argc, char *argv[]) {
@@ -288,7 +282,7 @@ int main(int argc, char *argv[]) {
         printf("  1. Load Flight Schedule from CSV (sample_flights.csv)\n");
         printf("  2. Run Conflict Detection & Automated Disruption Recovery\n");
         printf("  3. Run 3 Aviation Scenarios & 4-Tier Scalability Benchmark\n");
-        printf("  4. Run All 30 Syllabus Algorithms Showcase\n");
+        printf("  4. Run All 25 Syllabus Algorithms Showcase\n");
         printf("  5. Run Automated Unit, Boundary, Invalid & Oracle Test Suite\n");
         printf("  6. Export Current Recovery Plan to CSV & JSON\n");
         printf("  0. Exit Simulator\n");

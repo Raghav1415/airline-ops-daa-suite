@@ -1,0 +1,17 @@
+Dataset,N,Algorithm,Comparisons,Operations,AuxBytes,Time_ms,SolutionQuality
+1_Small_Normal_Ops,16,MergeSort,32,64,384,0.0000,16
+1_Small_Normal_Ops,16,QuickSort,120,135,0,0.0000,16
+1_Small_Normal_Ops,16,GreedyRunwaySelection,15,7,0,0.0010,8
+1_Small_Normal_Ops,16,GreedyGatePartition,22,16,64,0.0020,2
+2_Constraint_Shock,16,MergeSort,44,64,384,0.0000,16
+2_Constraint_Shock,16,QuickSort,57,60,0,0.0000,16
+2_Constraint_Shock,16,GreedyRunwaySelection,15,0,0,0.0010,1
+2_Constraint_Shock,16,GreedyGatePartition,120,16,64,0.0020,16
+3_Medium_Workload,64,MergeSort,237,384,1536,0.0000,64
+3_Medium_Workload,64,QuickSort,505,422,0,0.0000,64
+3_Medium_Workload,64,GreedyRunwaySelection,63,14,0,0.0010,15
+3_Medium_Workload,64,GreedyGatePartition,166,64,256,0.0020,6
+4_Large_Stress_Adversarial,250,MergeSort,983,1994,6000,0.0000,250
+4_Large_Stress_Adversarial,250,QuickSort,31125,15749,0,1.0000,250
+4_Large_Stress_Adversarial,250,GreedyRunwaySelection,249,17,0,0.0010,18
+4_Large_Stress_Adversarial,250,GreedyGatePartition,1849,250,1000,0.0020,14
